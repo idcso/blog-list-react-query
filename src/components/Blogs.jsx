@@ -1,9 +1,12 @@
 import { useState } from 'react'
+import { useUserValue } from '../UserContext'
 
-const Blog = ({ blog, username, handleBlogLike, handleDeleteBlog }) => {
+const Blog = ({ blog, handleBlogLike, handleDeleteBlog }) => {
   const [displayBlog, setDisplayBlog] = useState(false)
   const [buttonName, setButtonName] = useState('view')
   const [likes, setLikes] = useState(blog.likes)
+
+  const user = useUserValue()
 
   const handleBlogView = () => {
     setDisplayBlog(!displayBlog)
@@ -14,7 +17,7 @@ const Blog = ({ blog, username, handleBlogLike, handleDeleteBlog }) => {
     await handleBlogLike({
       ...blog,
       user: blog.user.id,
-      likes: likes + 1
+      likes: likes + 1,
     })
     setLikes(likes + 1)
   }
@@ -30,43 +33,45 @@ const Blog = ({ blog, username, handleBlogLike, handleDeleteBlog }) => {
     paddingLeft: 2,
     border: 'solid',
     borderWidth: 1,
-    marginBottom: 5
+    marginBottom: 5,
   }
 
   return (
-    <div style={blogStyle} className='blog'>
+    <div style={blogStyle} className="blog">
       <div>
         {blog.title} {blog.author}
         <button onClick={handleBlogView}>{buttonName}</button>
       </div>
       {displayBlog && (
-        <div className='blogInfo'>
+        <div className="blogInfo">
           {blog.url} <br />
-          likes {likes} <button datatype='like-button' onClick={putLike}>like</button> <br />
-          {blog.user.username ? blog.user.username : username} <br />
-          {blog.user.username === username &&
+          likes {likes}{' '}
+          <button datatype="like-button" onClick={putLike}>
+            like
+          </button>{' '}
+          <br />
+          {blog.user.username ? blog.user.username : user.username} <br />
+          {blog.user.username === user.username && (
             <button onClick={deleteBlog}>remove</button>
-          }
+          )}
         </div>
       )}
     </div>
   )
 }
 
-const Blogs = props => (
-  <div className='blogs'>
+const Blogs = (props) => (
+  <div className="blogs">
     {props.blogs
       .sort((a, b) => b.likes - a.likes)
-      .map(blog => (
+      .map((blog) => (
         <Blog
           key={blog.id}
           blog={blog}
-          username={props.username}
           handleBlogLike={props.handleBlogLike}
           handleDeleteBlog={props.handleDeleteBlog}
         />
-      ))
-    }
+      ))}
   </div>
 )
 

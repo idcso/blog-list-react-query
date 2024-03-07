@@ -1,11 +1,11 @@
 import { useState } from 'react'
 import Notification from './Notification'
 
-const LoginForm = props => {
+const LoginForm = (props) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
-  const handleUserLogin = async event => {
+  const handleUserLogin = async (event) => {
     event.preventDefault()
 
     const user = await props.userLogin({ username, password })
@@ -19,26 +19,26 @@ const LoginForm = props => {
   return (
     <div>
       <h2>log in to application</h2>
-      <Notification message={props.message} style={props.style} />
-      <form onSubmit={handleUserLogin} className='loginForm'>
+      <Notification />
+      <form onSubmit={handleUserLogin} className="loginForm">
         <div>
-					username
+          username
           <input
             type="text"
             value={username}
-            name='Username'
-            id='username'
-            onChange={ ({ target }) => setUsername(target.value) }
+            name="Username"
+            id="username"
+            onChange={({ target }) => setUsername(target.value)}
           />
         </div>
         <div>
-					password
+          password
           <input
             type="text"
             value={password}
-            name='Password'
-            id='password'
-            onChange={ ({ target }) => setPassword(target.value) }
+            name="Password"
+            id="password"
+            onChange={({ target }) => setPassword(target.value)}
           />
         </div>
         <button type="submit">login</button>
